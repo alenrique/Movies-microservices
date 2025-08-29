@@ -107,3 +107,19 @@ Para executar os testes, rode o seguinte comando na raiz do projeto:
 ```bash
 go test ./...
 ```
+
+## 📚 Documentação do Projeto
+
+Para uma compreensão mais aprofundada do projeto, desde a concepção até a estrutura técnica, consulte os recursos de documentação abaixo.
+
+* **[Análise de Requisitos (`REQUIREMENTS.md`)](https://github.com/alenrique/Movies-microservices/blob/main/documentation/REQUERIMENTS.md)**
+    * Detalha todos os requisitos funcionais e não-funcionais que guiaram o desenvolvimento do projeto.
+
+* **[Arquitetura do Sistema (`ARCHITECTURE.md`)](https://github.com/alenrique/Movies-microservices/blob/main/documentation/ARCHITECTURE.md)**
+    * Explica as decisões de design, a estrutura dos microsserviços, o fluxo de dados e a arquitetura do código.
+
+* **[Wiki do Projeto no GitHub](https://github.com/alenrique/Movies-microservices/wiki)**
+    * Contém guias detalhados sobre a arquitetura e a instalação, ideal para uma consulta organizada.
+
+* **[Quadro Kanban do Projeto no GitHub](https://github.com/users/alenrique/projects/2)**
+    * Visualize o fluxo de trabalho e o gerenciamento das tarefas de desenvolvimento, desde o backlog até a conclusão.
