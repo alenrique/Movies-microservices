@@ -1,0 +1,164 @@
+basePath: /
+definitions:
+  main.CreateMovieRequestSwagger:
+    properties:
+      director:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+  main.MovieSwagger:
+    properties:
+      director:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: henriquealencardev@gmail.com
+    name: Henrique Alencar
+    url: https://github.com/alenrique
+  description: API REST para um sistema de microsserviços que gerencia filmes.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API de Gerenciamento de Filmes
+  version: "1.0"
+paths:
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista com todos os filmes cadastrados no banco de dados.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Lista de filmes
+          schema:
+            items:
+              $ref: '#/definitions/main.MovieSwagger'
+            type: array
+        "500":
+          description: Erro interno no servidor
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Lista todos os filmes
+      tags:
+      - Filmes
+    post:
+      consumes:
+      - application/json
+      description: Adiciona um novo filme à coleção a partir dos dados enviados no
+        corpo da requisição.
+      parameters:
+      - description: Dados do Filme para Criar
+        in: body
+        name: movie
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateMovieRequestSwagger'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Filme criado com sucesso
+          schema:
+            $ref: '#/definitions/main.MovieSwagger'
+        "400":
+          description: Requisição inválida
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Erro interno no servidor
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Cria um novo filme
+      tags:
+      - Filmes
+  /movies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um filme da coleção com base no seu ID.
+      parameters:
+      - description: ID do Filme a ser deletado
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Filme deletado com sucesso (sem conteúdo de resposta)
+        "404":
+          description: Filme não encontrado
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Erro interno no servidor
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Deleta um filme por ID
+      tags:
+      - Filmes
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um filme específico com base no seu ID.
+      parameters:
+      - description: ID do Filme
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Filme encontrado
+          schema:
+            $ref: '#/definitions/main.MovieSwagger'
+        "404":
+          description: Filme não encontrado
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Erro interno no servidor
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Busca um filme por ID
+      tags:
+      - Filmes
+swagger: "2.0"

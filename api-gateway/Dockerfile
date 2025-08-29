@@ -30,6 +30,9 @@ COPY --from=builder /app/api-gateway-bin .
 
 # O gateway não precisa do movies.json
 
+# ADICIONE A LINHA ABAIXO para copiar a documentação gerada
+COPY api-gateway/docs ./docs
+
 # Expomos a porta 8080, que é a porta do nosso servidor HTTP.
 EXPOSE 8080
 

@@ -9,7 +9,6 @@ services:
   # Serviço do Banco de Dados MongoDB
   mongodb:
     image: mongo:latest
-    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
@@ -19,7 +18,6 @@ services:
 
   # Nosso Microserviço de Filmes
   movies-service:
-    container_name: movies-service
     # 'build' instrui o compose a construir a imagem a partir de um Dockerfile
     build:
       context: . # O contexto é a pasta raiz do projeto
@@ -34,7 +32,6 @@ services:
 
   # Nosso Microserviço de API Gateway
   api-gateway:
-    container_name: api-gateway
     build:
       context: .
       dockerfile: api-gateway/Dockerfile
