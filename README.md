@@ -58,7 +58,7 @@ O ambiente completo é orquestrado com Docker Compose, permitindo que toda a apl
     ```
 3.  Execute o Docker Compose para construir as imagens e iniciar os containers:
     ```bash
-    docker-compose -p henrique-alencar-movies-app up up --build
+    docker-compose -p henrique-alencar-movies-app up --build
     ```
 O `-p henrique-alencar-movies-app` significa que os nomes dos containers irão começar com `henrique-alencar-movies-app` para evitar conflito com outros containers de nomes iguais, com esse comando irá subir os containers com nomes: 
 * `henrique-alencar-movies-app_mongodb_1`
