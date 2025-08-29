@@ -31,7 +31,7 @@ type handler struct {
 func main() {
 	// --- Conexão gRPC (sem alterações) ---
 	log.Println("Iniciando cliente gRPC para o Movie Service...")
-	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("movies-service:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Não foi possível conectar ao servidor gRPC: %v", err)
 	}
