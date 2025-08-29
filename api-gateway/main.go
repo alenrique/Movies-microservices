@@ -18,6 +18,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
+	httpSwagger "github.com/swaggo/http-swagger" // IMPORT DO SWAGGER
+
+	_ "github.com/alenrique/Movies-microservices/api-gateway/docs"
+
 	pb "github.com/alenrique/Movies-microservices/proto" // Importamos nosso pacote proto
 )
 
@@ -28,6 +32,37 @@ type handler struct {
 	client pb.MovieServiceClient
 }
 
+// MovieSwagger é uma struct apenas para documentação Swagger.
+// Copie os campos do seu pb.Movie aqui.
+type MovieSwagger struct {
+	Id       string `json:"id"`
+	Title    string `json:"title"`
+	Director string `json:"director"`
+	Year     int32  `json:"year"`
+}
+
+// CreateMovieRequestSwagger é uma struct apenas para documentação Swagger.
+// Copie os campos do seu pb.CreateMovieRequest aqui.
+type CreateMovieRequestSwagger struct {
+	Title    string `json:"title"`
+	Director string `json:"director"`
+	Year     int32  `json:"year"`
+}
+
+// @title           API de Gerenciamento de Filmes
+// @version         1.0
+// @description     API REST para um sistema de microsserviços que gerencia filmes.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   Henrique Alencar
+// @contact.url    https://github.com/alenrique
+// @contact.email  henriquealencardev@gmail.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /
 func main() {
 	// --- Conexão gRPC (sem alterações) ---
 	log.Println("Iniciando cliente gRPC para o Movie Service...")
@@ -41,6 +76,10 @@ func main() {
 
 	// --- Configuração do Servidor HTTP (sem alterações) ---
 	router := mux.NewRouter()
+
+	// --- CORREÇÃO 2: Adicionando a rota do Swagger ---
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
 	router.HandleFunc("/movies", h.listMovies).Methods(http.MethodGet)
 	router.HandleFunc("/movies", h.createMovie).Methods(http.MethodPost)
 	router.HandleFunc("/movies/{id}", h.getMovie).Methods(http.MethodGet)
@@ -82,8 +121,14 @@ func main() {
 	}
 }
 
-// --- Funções de Handler (ainda a serem implementadas) ---
-
+// @Summary      Lista todos os filmes
+// @Description  Retorna uma lista com todos os filmes cadastrados no banco de dados.
+// @Tags         Filmes
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   MovieSwagger "Lista de filmes"
+// @Failure      500  {object}  object{error=string} "Erro interno no servidor"
+// @Router       /movies [get]
 func (h *handler) listMovies(w http.ResponseWriter, r *http.Request) {
 	log.Println("Requisição recebida: GET /movies")
 
@@ -111,6 +156,16 @@ func (h *handler) listMovies(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary      Cria um novo filme
+// @Description  Adiciona um novo filme à coleção a partir dos dados enviados no corpo da requisição.
+// @Tags         Filmes
+// @Accept       json
+// @Produce      json
+// @Param        movie  body      CreateMovieRequestSwagger  true  "Dados do Filme para Criar"
+// @Success      201    {object}  MovieSwagger "Filme criado com sucesso"
+// @Failure      400    {object}  object{error=string} "Requisição inválida"
+// @Failure      500    {object}  object{error=string} "Erro interno no servidor"
+// @Router       /movies [post]
 func (h *handler) createMovie(w http.ResponseWriter, r *http.Request) {
 	log.Println("Requisição recebida: POST /movies")
 
@@ -142,6 +197,16 @@ func (h *handler) createMovie(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+// @Summary      Busca um filme por ID
+// @Description  Retorna os detalhes de um filme específico com base no seu ID.
+// @Tags         Filmes
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "ID do Filme"
+// @Success      200  {object}  MovieSwagger "Filme encontrado"
+// @Failure      404  {object}  object{error=string} "Filme não encontrado"
+// @Failure      500  {object}  object{error=string} "Erro interno no servidor"
+// @Router       /movies/{id} [get]
 func (h *handler) getMovie(w http.ResponseWriter, r *http.Request) {
 	log.Println("Requisição recebida: GET /movies/{id}")
 
@@ -173,6 +238,16 @@ func (h *handler) getMovie(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+// @Summary      Deleta um filme por ID
+// @Description  Remove um filme da coleção com base no seu ID.
+// @Tags         Filmes
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "ID do Filme a ser deletado"
+// @Success      204  "Filme deletado com sucesso (sem conteúdo de resposta)"
+// @Failure      404  {object}  object{error=string} "Filme não encontrado"
+// @Failure      500  {object}  object{error=string} "Erro interno no servidor"
+// @Router       /movies/{id} [delete]
 func (h *handler) deleteMovie(w http.ResponseWriter, r *http.Request) {
 	log.Println("Requisição recebida: DELETE /movies/{id}")
 
