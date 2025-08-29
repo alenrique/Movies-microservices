@@ -129,6 +129,10 @@ Para executar os testes, rode o seguinte comando na raiz do projeto:
 ```bash
 go test ./...
 ```
+#### Demonstração da execução dos testes
+
+![2025-08-29 20-27-41](https://github.com/user-attachments/assets/cbd8d27f-db11-4a3f-8f14-cdf749186cb2)
+
 
 ## 📚 Documentação do Projeto
 
