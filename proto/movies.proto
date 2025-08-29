@@ -1,0 +1,66 @@
+// 1. Configuração
+// Especifica a versão da sintaxe do Protocol Buffers que estamos usando.
+syntax = "proto3";
+
+// Define um namespace para evitar conflitos de nomes.
+package movies;
+
+// Opção específica para Go: define onde os arquivos .go gerados serão colocados.
+option go_package = "github.com/alenrique/Movies-microservices/proto;proto";
+
+
+// 2. Mensagens
+// Define a estrutura de dados de um Filme.
+// Os números (1, 2, 3, 4) são tags únicas para cada campo, usados para a serialização binária.
+message Movie {
+  string id = 1;
+  string title = 2;
+  string director = 3;
+  int32 year = 4;
+}
+
+// Mensagem para a requisição de criação de um filme.
+// Note que não incluímos o 'id', pois ele será gerado pelo servidor.
+message CreateMovieRequest {
+  string title = 1;
+  string director = 2;
+  int32 year = 3;
+}
+
+// Mensagem para requisições que usam apenas o ID do filme.
+message GetMovieRequest {
+  string id = 1;
+}
+
+message DeleteMovieRequest {
+  string id = 1;
+}
+
+// Mensagem para a requisição de listagem de filmes (pode ser vazia).
+message ListMoviesRequest {}
+
+// Mensagem para a resposta de listagem de filmes.
+// 'repeated' significa que é uma lista ou um array de Filmes.
+message ListMoviesResponse {
+  repeated Movie movies = 1;
+}
+
+// Mensagem vazia para respostas que só precisam indicar sucesso.
+message DeleteMovieResponse {}
+
+
+// 3. Serviço
+// Define o conjunto de métodos que o nosso Serviço de Filmes vai expor.
+service MovieService {
+  // Método para criar um filme. Recebe os dados do filme e retorna o filme criado (com ID).
+  rpc CreateMovie(CreateMovieRequest) returns (Movie);
+
+  // Método para buscar um filme pelo ID. Recebe um ID e retorna o filme correspondente.
+  rpc GetMovie(GetMovieRequest) returns (Movie);
+
+  // Método para listar todos os filmes. Não recebe parâmetros e retorna uma lista de filmes.
+  rpc ListMovies(ListMoviesRequest) returns (ListMoviesResponse);
+
+  // Método para deletar um filme. Recebe um ID e retorna uma resposta vazia de sucesso.
+  rpc DeleteMovie(DeleteMovieRequest) returns (DeleteMovieResponse);
+}
