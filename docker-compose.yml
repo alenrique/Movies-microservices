@@ -1,0 +1,57 @@
+# Arquivo: docker-compose.yml
+
+# Define a versão do docker-compose
+version: '3.8'
+
+# Define os nossos containers (serviços)
+services:
+
+  # Serviço do Banco de Dados MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - movies-net
+
+  # Nosso Microserviço de Filmes
+  movies-service:
+    container_name: movies-service
+    # 'build' instrui o compose a construir a imagem a partir de um Dockerfile
+    build:
+      context: . # O contexto é a pasta raiz do projeto
+      dockerfile: movies-service/Dockerfile # O caminho para o Dockerfile
+    ports:
+      - "50051:50051"
+    networks:
+      - movies-net
+    # depends_on garante que o mongodb será iniciado ANTES do movies-service
+    depends_on:
+      - mongodb
+
+  # Nosso Microserviço de API Gateway
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - movies-net
+    # Garante que o movies-service será iniciado ANTES do api-gateway
+    depends_on:
+      - movies-service
+
+# Define a rede customizada que nossos serviços usarão para se comunicar
+networks:
+  movies-net:
+    driver: bridge
+
+# Define o volume para persistir os dados do MongoDB
+volumes:
+  mongo-data:
+    driver: local
