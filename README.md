@@ -99,6 +99,28 @@ curl http://localhost:8080/movies/{id}
 curl -v -X DELETE http://localhost:8080/movies/{id}
 ```
 
+#### Demonstração da execução
+
+* Execução do projeto
+
+![2025-08-29 19-38-43](https://github.com/user-attachments/assets/3465a650-930b-4fcb-a231-6e5c53558da1)
+
+1. Listar Todos os Filmes
+
+![2025-08-29 19-39-37](https://github.com/user-attachments/assets/7d0c00bb-1233-410f-bc55-faf6b0a4d7ae)
+
+2. Criar um Novo Filme
+
+![2025-08-29 19-40-19](https://github.com/user-attachments/assets/1136fa32-6c75-4b02-a128-de1e6095a39b)
+
+3. Buscar Filme por ID
+
+![2025-08-29 19-40-57](https://github.com/user-attachments/assets/82e80361-2f62-49f7-9ae8-b44c38ca8d07)
+
+4. Deletar um Filme
+
+![2025-08-29 19-41-45](https://github.com/user-attachments/assets/eae01e0b-daed-4713-8551-33c9c5b1108d)
+
 ## ✅ Testes
 
 O projeto inclui testes unitários para o núcleo de negócio do `movies-service`, garantindo a qualidade e o comportamento esperado da lógica principal.
